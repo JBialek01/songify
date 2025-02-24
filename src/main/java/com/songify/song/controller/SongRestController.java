@@ -1,5 +1,10 @@
-package com.songify.song;
+package com.songify.song.controller;
 
+import com.songify.song.dto.DeleteSongResponseDto;
+import com.songify.song.dto.SingleSongResponseDto;
+import com.songify.song.dto.SongRequestDto;
+import com.songify.song.dto.SongResponseDto;
+import com.songify.song.error.SongNotFoundException;
 import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,10 +49,10 @@ public class SongRestController {
     @GetMapping("/songs/{id}")
     public ResponseEntity<SingleSongResponseDto> getSongById(@PathVariable Integer id, @RequestHeader(required = false) String requestId) {
         log.info(requestId);
-        String song = database.get(id);
-        if (song == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        if (!database.containsKey(id)) {
+            throw new SongNotFoundException("Song with id: " + id + " not found");
         }
+        String song = database.get(id);
         SingleSongResponseDto response = new SingleSongResponseDto(song);
         return ResponseEntity.ok(response);
     }
@@ -61,8 +66,11 @@ public class SongRestController {
     }
 
     @DeleteMapping("/songs/{id}")
-    public ResponseEntity<String> deleteSongByIdUsingPathVariable(@PathVariable Integer id){
+    public ResponseEntity<DeleteSongResponseDto> deleteSongByIdUsingPathVariable(@PathVariable Integer id){
+        if (!database.containsKey(id)) {
+            throw new SongNotFoundException("Song with id: " + id + " not found");
+        }
         database.remove(id);
-        return ResponseEntity.ok("You deleted song with id: " + id);
+        return ResponseEntity.ok(new DeleteSongResponseDto("You deleted song with id: " + id, HttpStatus.OK));
     }
 }
