@@ -1,5 +1,6 @@
-package com.songify;
+package com.songify.song;
 
+import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,5 +43,13 @@ public class SongsController {
         }
         SingleSongResponseDto response = new SingleSongResponseDto(song);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/songs")
+    public ResponseEntity<SingleSongResponseDto> postSong(@RequestBody @Valid SongRequestDto request) {
+        String songName = request.songName();
+        log.info("Adding new song: " + songName);
+        database.put(database.size() + 1, songName);
+        return ResponseEntity.ok(new SingleSongResponseDto(songName));
     }
 }
