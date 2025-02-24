@@ -12,15 +12,15 @@ import java.util.stream.Collectors;
 @Log4j2
 public class SongsController {
 
-    Map<Integer, String> database = new HashMap<>();
-
+    Map<Integer, String> database = new HashMap<>(Map.of(
+            1, "Shawn Mendes - Stitches",
+            2, "Ariana Grande - 7 rings",
+            3, "Billie Eilish - bad guy",
+            4, "Ed Sheeran - Shape of You"
+    ));
 
     @GetMapping("/songs")
     public ResponseEntity<SongResponseDto> getAllSongs(@RequestParam(required = false) Integer limit) {
-        database.put(1, "Shawn Mendes - Stitches");
-        database.put(2, "Ariana Grande - 7 rings");
-        database.put(3, "Billie Eilish - bad guy");
-        database.put(4, "Ed Sheeran - Shape of You");
         if (limit != null) {
             Map<Integer, String> limitedMap = database.entrySet()
                     .stream()
