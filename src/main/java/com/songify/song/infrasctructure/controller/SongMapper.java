@@ -8,9 +8,12 @@ import com.songify.song.domain.model.Song;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
-import java.util.Map;
 
 public class SongMapper {
+
+    public static SongDto mapFromSongToSongDto(Song song) {
+        return new SongDto(song.getId(), song.getName(), song.getArtist());
+    }
 
     public static Song mapFromCreateSongRequestDtoToSong(CreateSongRequestDto dto) {
         return new Song(dto.songName(), dto.artist());
@@ -25,7 +28,8 @@ public class SongMapper {
     }
 
     public static CreateSongResponseDto mapFromSongToCreateSongResponseDto(Song song) {
-        return new CreateSongResponseDto(song);
+        SongDto songDto = SongMapper.mapFromSongToSongDto(song);
+        return new CreateSongResponseDto(songDto);
     }
 
     public static DeleteSongResponseDto mapFromSongToDeleteSongResponseDto(Long id) {
@@ -36,15 +40,19 @@ public class SongMapper {
         return new UpdateSongResponseDto(newSong.getName(), newSong.getArtist());
     }
 
-    public static PartiallyUpdateSongResponseDto mapFromSongToPartiallyUpdateSongResponseDto(Song updatedSong) {
-        return new PartiallyUpdateSongResponseDto(updatedSong);
+    public static PartiallyUpdateSongResponseDto mapFromSongToPartiallyUpdateSongResponseDto(Song song) {
+        SongDto songDto = SongMapper.mapFromSongToSongDto(song);
+        return new PartiallyUpdateSongResponseDto(songDto);
     }
 
     public static GetSongResponseDto mapFromSongToGetSongResponseDto(Song song) {
-        return new GetSongResponseDto(song);
+        SongDto songDto = SongMapper.mapFromSongToSongDto(song);
+        return new GetSongResponseDto(songDto);
     }
 
-    public static GetAllSongsResponseDto mapFromSongToGetAllSongsResponseDto(List<Song> database) {
-        return new GetAllSongsResponseDto(database);
+    public static GetAllSongsResponseDto mapFromSongToGetAllSongsResponseDto(List<Song> songs) {
+        List<SongDto> songDtos = songs.stream()
+                .map(SongMapper::mapFromSongToSongDto).toList();
+        return new GetAllSongsResponseDto(songDtos);
     }
 }
