@@ -8,7 +8,6 @@ import com.songify.song.infrasctructure.controller.dto.request.PartiallyUpdateSo
 import com.songify.song.infrasctructure.controller.dto.request.CreateSongRequestDto;
 import com.songify.song.infrasctructure.controller.dto.request.UpdateSongRequestDto;
 import com.songify.song.infrasctructure.controller.dto.response.*;
-import com.songify.song.domain.model.SongNotFoundException;
 import com.songify.song.domain.model.Song;
 import jakarta.validation.Valid;
 
