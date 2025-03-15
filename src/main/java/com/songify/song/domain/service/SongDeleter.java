@@ -1,20 +1,22 @@
 package com.songify.song.domain.service;
 
 import com.songify.song.domain.repository.SongRepository;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
+@AllArgsConstructor
+@Transactional
 public class SongDeleter {
 
     private final SongRepository songRepository;
-
-    public SongDeleter(SongRepository songRepository) {
-        this.songRepository = songRepository;
-    }
+    private final SongRetriever songRetriever;
 
     public void deleteById(Long id) {
+        songRetriever.existsById(id);
         log.info("Deleting song by id: " + id);
         songRepository.deleteById(id);
     }
