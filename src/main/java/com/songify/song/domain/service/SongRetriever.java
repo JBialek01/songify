@@ -30,12 +30,14 @@ public class SongRetriever {
                 .toList();
     }
 
-    public Optional<Song> findSongById(Long id) {
-        return songRepository.findById(id);
+    public Song findSongById(Long id) {
+        return songRepository.findById(id)
+                .orElseThrow(() -> new SongNotFoundException("Song with id " + id + " not found"));
     }
 
     public void existsById(Long id) {
-        findSongById(id)
-                .orElseThrow(() -> new SongNotFoundException("Song with id " + id + " not found"));
+        if (!songRepository.existsById(id)) {
+            throw new SongNotFoundException("Song with id " + id + " not found");
+        }
     }
 }

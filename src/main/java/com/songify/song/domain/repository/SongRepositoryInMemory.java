@@ -44,4 +44,9 @@ public class SongRepositoryInMemory implements SongRepository {
     public void updateById(Long id, Song newSong) {
 
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return false;
+    }
 }

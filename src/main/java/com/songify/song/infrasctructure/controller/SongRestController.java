@@ -1,6 +1,9 @@
-package com.songify.song.domain.service;
+package com.songify.song.infrasctructure.controller;
 
-import com.songify.song.infrasctructure.controller.SongMapper;
+import com.songify.song.domain.service.SongAdder;
+import com.songify.song.domain.service.SongDeleter;
+import com.songify.song.domain.service.SongRetriever;
+import com.songify.song.domain.service.SongUpdater;
 import com.songify.song.infrasctructure.controller.dto.request.PartiallyUpdateSongRequestDto;
 import com.songify.song.infrasctructure.controller.dto.request.CreateSongRequestDto;
 import com.songify.song.infrasctructure.controller.dto.request.UpdateSongRequestDto;
@@ -42,8 +45,7 @@ public class SongRestController {
     @GetMapping("/{id}")
     public ResponseEntity<GetSongResponseDto> getSongById(@PathVariable Long id, @RequestHeader(required = false) String requestId) {
         log.info(requestId);
-        Song song = songRetriever.findSongById(id)
-                .orElseThrow(() -> new SongNotFoundException("Song with id " + id + " not found"));
+        Song song = songRetriever.findSongById(id);
         GetSongResponseDto response = SongMapper.mapFromSongToGetSongResponseDto(song);
         return ResponseEntity.ok(response);
     }
@@ -58,7 +60,6 @@ public class SongRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<DeleteSongResponseDto> deleteSongByIdUsingPathVariable(@PathVariable Long id) {
-        songRetriever.existsById(id);
         songDeleter.deleteById(id);
         DeleteSongResponseDto body = SongMapper.mapFromSongToDeleteSongResponseDto(id);
         return ResponseEntity.ok(body);
@@ -67,7 +68,6 @@ public class SongRestController {
     @PutMapping("/{id}")
     public ResponseEntity<UpdateSongResponseDto> update(@PathVariable Long id,
                                                         @RequestBody @Valid UpdateSongRequestDto request) {
-        songRetriever.existsById(id);
         Song newSong = SongMapper.mapFromUpdateSongRequestDtoToSong(request);
         songUpdater.updateById(id, newSong);
         UpdateSongResponseDto body = SongMapper.mapFromSongToUpdateSongResponseDto(newSong);
@@ -77,25 +77,9 @@ public class SongRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<PartiallyUpdateSongResponseDto> partiallyUpdateSong(@PathVariable Long id,
                                                                               @RequestBody PartiallyUpdateSongRequestDto request) {
-        List<Song> allSongs = songRetriever.findAll();
-        if (!allSongs.contains(id)) {
-            throw new SongNotFoundException("Song with id " + id + " not found");
-        }
-        Song songFromDatabase = allSongs.get(Math.toIntExact(id));
         Song updatedSong = SongMapper.mapFromPartiallyUpdateSongRequestDtoToSong(request);
-        Song.SongBuilder builder = Song.builder();
-        if (updatedSong.getName() != null) {
-            builder.name(updatedSong.getName());
-        } else {
-            builder.name(songFromDatabase.getName());
-        }
-        if (updatedSong.getArtist() != null) {
-            builder.artist(updatedSong.getArtist());
-        } else {
-            builder.artist(songFromDatabase.getArtist());
-        }
-        songAdder.addSong(updatedSong);
-        PartiallyUpdateSongResponseDto body = SongMapper.mapFromSongToPartiallyUpdateSongResponseDto(updatedSong);
+        Song savedSong = songUpdater.updatePartiallyById(id, updatedSong);
+        PartiallyUpdateSongResponseDto body = SongMapper.mapFromSongToPartiallyUpdateSongResponseDto(savedSong);
         return ResponseEntity.ok(body);
     }
 }
