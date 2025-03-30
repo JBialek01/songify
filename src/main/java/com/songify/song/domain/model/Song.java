@@ -1,20 +1,23 @@
 package com.songify.song.domain.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
+
+import java.time.Instant;
+import java.util.Objects;
 
 @Builder
 @Entity
 @Getter
 @Setter
 @Table(name = "song")
-public class Song {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Song extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "song_id_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "song_id_seq", sequenceName = "song_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)
@@ -23,17 +26,14 @@ public class Song {
     @Column(nullable = false)
     String artist;
 
-    public Song() {
+    Instant releaseDate;
 
-    }
+    Long duration;
+
+    @Enumerated(EnumType.STRING)
+    SongLanguage language;
 
     public Song(String name, String artist) {
-        this.name = name;
-        this.artist = artist;
-    }
-
-    public Song(Long id, String name, String artist) {
-        this.id = id;
         this.name = name;
         this.artist = artist;
     }

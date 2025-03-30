@@ -15,6 +15,7 @@ public class SongUpdater {
 
     private final SongRepository songRepository;
     private final SongRetriever songRetriever;
+    private final SongAdder songAdder;
 
     public void updateById(Long id, Song newSong) {
         songRetriever.existsById(id);

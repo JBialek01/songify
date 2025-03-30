@@ -9,7 +9,10 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: postgresdb
+      POSTGRES_DB: postgres
+    volumes:
+        - local_pgdata:/var/lib/postgresql/data
+        - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 
   pgadmin:
@@ -21,3 +24,7 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: raj@nola.com
       PGADMIN_DEFAULT_PASSWORD: admin
+
+volumes:
+    local_pgdata:
+    pgadmin_data:
