@@ -15,7 +15,6 @@ public class SongUpdater {
 
     private final SongRepository songRepository;
     private final SongRetriever songRetriever;
-    private final SongAdder songAdder;
 
     public void updateById(Long id, Song newSong) {
         songRetriever.existsById(id);
@@ -39,22 +38,4 @@ public class SongUpdater {
         updateById(id, toSave);
         return toSave;
     }
-
-    // Dirty checking version
-//    public void updateById(Long id, Song newSong) {
-//        Song songById = songRetriever.findSongById(id);
-//        songById.setName(newSong.getName());
-//        songById.setArtist(newSong.getArtist());
-//    }
-//
-//    public Song updatePartiallyById(Long id, Song songFromRequest) {
-//        Song songFromDatabase = songRetriever.findSongById(id);
-//        if (songFromRequest.getName() != null) {
-//            songFromDatabase.setName(songFromRequest.getName());
-//        }
-//        if (songFromRequest.getArtist() != null) {
-//            songFromDatabase.setArtist(songFromRequest.getArtist());
-//        }
-//        return songFromDatabase;
-//    }
 }
