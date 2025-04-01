@@ -8,7 +8,7 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 import java.util.Optional;
 
-public interface SongRepository extends Repository<Song, Long> {
+interface SongRepository extends Repository<Song, Long> {
 
     @Query("select s from Song s")
     List<Song> findAll(Pageable pageable);
