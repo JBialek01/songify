@@ -1,4 +1,4 @@
-package com.songify.domain.crud.song;
+package com.songify.domain.crud;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ class SongUpdater {
     }
 
      Song updatePartiallyById(Long id, Song songFromRequest) {
-        Song songFromDatabase = songRetriever.findSongById(id);
+        Song songFromDatabase = songRetriever.findSongDtoById(id);
         Song.SongBuilder builder = Song.builder();
         if (songFromRequest.getName() != null) {
             builder.name(songFromRequest.getName());

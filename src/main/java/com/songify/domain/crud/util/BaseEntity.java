@@ -26,6 +26,6 @@ public class BaseEntity implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(uuid);
+        return Objects.hash(uuid);
     }
 }

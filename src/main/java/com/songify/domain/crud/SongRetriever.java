@@ -1,4 +1,4 @@
-package com.songify.domain.crud.song;
+package com.songify.domain.crud;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,7 +19,7 @@ class SongRetriever {
         return songRepository.findAll(pageable);
     }
 
-     Song findSongById(Long id) {
+     Song findSongDtoById(Long id) {
         return songRepository.findById(id)
                 .orElseThrow(() -> new SongNotFoundException("Song with id " + id + " not found"));
     }

@@ -1,4 +1,4 @@
-package com.songify.domain.crud.song;
+package com.songify.domain.crud;
 
 import com.songify.domain.crud.util.BaseEntity;
 import jakarta.persistence.Column;
@@ -8,8 +8,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +22,6 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
-@Table(name = "song")
 @NoArgsConstructor
 @AllArgsConstructor
 class Song extends BaseEntity {
@@ -37,17 +36,20 @@ class Song extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    String name;
+    private String name;
 
     @Column(nullable = false)
-    String artist;
+    private String artist;
 
-    Instant releaseDate;
+    private Instant releaseDate;
 
-    Long duration;
+    private Long duration;
+
+    @OneToOne
+    private Genre genre;
 
     @Enumerated(EnumType.STRING)
-    SongLanguage language;
+    private SongLanguage language;
 
     public Song(String name) {
         this.name = name;
