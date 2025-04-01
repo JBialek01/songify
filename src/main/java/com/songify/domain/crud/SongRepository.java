@@ -21,7 +21,7 @@ public interface SongRepository extends Repository<Song, Long> {
     void deleteById(Long id);
 
     @Modifying
-    @Query("update Song s set s.name = :#{#newSong.name}, s.artist = :#{#newSong.artist} where s.id = :id")
+    @Query("update Song s set s.name = :#{#newSong.name} where s.id = :id")
     void updateById(Long id, Song newSong);
 
     Song save(Song song);
