@@ -2,7 +2,7 @@ SONGIFY: APLIKACJA DO ZARZĄDZANIA ALBUMAMI, ARTYSTAMI I UTWORAMI
 
 ~~1. można dodać artystę (nazwa artysty)~~
 ~~2. można dodać gatunek muzyczny (nazwa gatunku)~~ 
-3. można dodać album (tytuł, data wydania, ale musi być w nim przynajmniej jedna piosenka) 
+~~3. można dodać album (tytuł, data wydania, ale musi być w nim przynajmniej jedna piosenka)~~ 
 4. można dodać piosenkę (tytuł, czas trwania, data wydania, jezyk piosenki)
 5. można usunąć artystę (usuwamy wtedy jego piosenki oraz albumy, ale jesli było więcej niż jeden artysta w albumie, to usuwamy tylko artystę z albumu i samego artystę) 
 6. można usunąć gatunek muzyczny (ale nie może istnieć piosenka z takim gatunkiem) 
