@@ -31,17 +31,18 @@ public class SongifyCrudFacade {
     private final AlbumAdder albumAdder;
     private final ArtistRetriever artistRetriever;
     private final AlbumRetriever albumRetriever;
+    private final ArtistDeleter artistDeleter;
 
 
-    public ArtistDto addArtist(ArtistRequestDto dto){
+    public ArtistDto addArtist(ArtistRequestDto dto) {
         return artistAdder.addArtist(dto.name());
     }
 
-    public GenreDto addGenre(GenreRequestDto dto){
+    public GenreDto addGenre(GenreRequestDto dto) {
         return genreAdder.addGenre(dto.name());
     }
 
-    public AlbumDto addAlbumWithSong(AlbumRequestDto dto){
+    public AlbumDto addAlbumWithSong(AlbumRequestDto dto) {
         return albumAdder.addAlbum(dto.songId(), dto.title(), dto.releaseDate());
     }
 
@@ -49,7 +50,7 @@ public class SongifyCrudFacade {
         return songAdder.addSong(dto);
     }
 
-    public AlbumInfo findAlbumByIdWithArtistsAndSongs(Long id){
+    public AlbumInfo findAlbumByIdWithArtistsAndSongs(Long id) {
         return albumRetriever.findAlbumByIdWithArtistsAndSongs(id);
     }
 
@@ -99,5 +100,9 @@ public class SongifyCrudFacade {
     public void deleteSongById(Long id) {
         songRetriever.existsById(id);
         songDeleter.deleteById(id);
+    }
+
+    public void deleteArtistByIdWithAlbumsAndSongs(Long artistId) {
+        artistDeleter.deleteArtistByIdWithAlbumsAndSongs(artistId);
     }
 }
