@@ -16,6 +16,8 @@ interface AlbumRepository extends Repository<Album, Long> {
 
     Optional<Album> findById(Long id);
 
+    Set<Album> findAll();
+
     @Query("""
             select a from Album a
             join fetch a.songs songs
@@ -33,5 +35,4 @@ interface AlbumRepository extends Repository<Album, Long> {
     @Modifying
     @Query("delete from Album a where a.id in :ids")
     int deleteByIdIn(Collection<Long> ids);
-
 }
