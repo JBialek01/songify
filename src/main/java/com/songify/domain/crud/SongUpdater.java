@@ -14,7 +14,7 @@ class SongUpdater {
     private final SongRepository songRepository;
     private final SongRetriever songRetriever;
 
-     void updateById(Long id, Song newSong) {
+    void updateById(Long id, Song newSong) {
         songRetriever.existsById(id);
         songRepository.updateById(id, newSong);
     }
