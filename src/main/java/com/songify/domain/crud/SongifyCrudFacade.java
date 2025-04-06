@@ -52,6 +52,10 @@ public class SongifyCrudFacade {
         artistAssigner.addArtistToAlbum(artistId, albumId);
     }
 
+    public ArtistDto addArtistWithDefaultAlbumAndSong(ArtistRequestDto dto) {
+        return artistAdder.addArtistWithDefaultAlbumAndSong(dto);
+    }
+
     public SongDto addSong(final SongRequestDto dto) {
         return songAdder.addSong(dto);
     }
