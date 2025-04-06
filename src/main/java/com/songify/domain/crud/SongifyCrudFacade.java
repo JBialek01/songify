@@ -32,6 +32,8 @@ public class SongifyCrudFacade {
     private final ArtistRetriever artistRetriever;
     private final AlbumRetriever albumRetriever;
     private final ArtistDeleter artistDeleter;
+    private final ArtistAssigner artistAssigner;
+    private final ArtistUpdater artistUpdater;
 
 
     public ArtistDto addArtist(ArtistRequestDto dto) {
@@ -44,6 +46,14 @@ public class SongifyCrudFacade {
 
     public AlbumDto addAlbumWithSong(AlbumRequestDto dto) {
         return albumAdder.addAlbum(dto.songId(), dto.title(), dto.releaseDate());
+    }
+
+    public void addArtistToAlbum(Long artistId, Long albumId) {
+        artistAssigner.addArtistToAlbum(artistId, albumId);
+    }
+
+    public ArtistDto addArtistWithDefaultAlbumAndSong(ArtistRequestDto dto) {
+        return artistAdder.addArtistWithDefaultAlbumAndSong(dto);
     }
 
     public SongDto addSong(final SongRequestDto dto) {
@@ -66,11 +76,13 @@ public class SongifyCrudFacade {
         return songRetriever.findSongDtoById(id);
     }
 
+    public ArtistDto updateArtistNameById(Long artistId, String name) {
+        return artistUpdater.updateArtistNameById(artistId, name);
+    }
+
     public void updateSongById(Long id, SongDto newSongDto) {
         songRetriever.existsById(id);
-        // some domain validator
         Song songValidatedAndReadyToUpdate = new Song(newSongDto.name());
-        // some domain validator ended checking
         songUpdater.updateById(id, songValidatedAndReadyToUpdate);
     }
 
@@ -83,18 +95,11 @@ public class SongifyCrudFacade {
         } else {
             toSave.setName(songFromDatabase.getName());
         }
-//        todo
-//        if (songFromRequest.getArtist() != null) {
-//            builder.artist(songFromRequest.getArtist());
-//        } else {
-//            builder.artist(songFromDatabase.getArtist());
-//        }
         songUpdater.updateById(id, toSave);
         return SongDto.builder()
                 .id(toSave.getId())
                 .name(toSave.getName())
                 .build();
-
     }
 
     public void deleteSongById(Long id) {

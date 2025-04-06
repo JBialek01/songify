@@ -1,6 +1,7 @@
 package com.songify.domain.crud;
 
 import com.songify.domain.crud.util.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,7 +40,7 @@ class Album extends BaseEntity {
 
     private Instant releaseDate;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "album_id")
     private Set<Song> songs = new HashSet<>();
 
@@ -53,5 +54,9 @@ class Album extends BaseEntity {
     void removeArtist(Artist artist) {
         artists.remove(artist);
         artist.removeAlbum(this);
+    }
+
+    void addArtist(final Artist artist) {
+        artists.add(artist);
     }
 }
