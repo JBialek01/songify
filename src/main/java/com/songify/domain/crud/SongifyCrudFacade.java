@@ -33,6 +33,7 @@ public class SongifyCrudFacade {
     private final AlbumRetriever albumRetriever;
     private final ArtistDeleter artistDeleter;
     private final ArtistAssigner artistAssigner;
+    private final ArtistUpdater artistUpdater;
 
 
     public ArtistDto addArtist(ArtistRequestDto dto) {
@@ -69,6 +70,10 @@ public class SongifyCrudFacade {
 
     public SongDto findSongDtoById(Long id) {
         return songRetriever.findSongDtoById(id);
+    }
+
+    public ArtistDto updateArtistNameById(Long artistId, String name) {
+        return artistUpdater.updateArtistNameById(artistId, name);
     }
 
     public void updateSongById(Long id, SongDto newSongDto) {
