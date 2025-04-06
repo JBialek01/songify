@@ -82,9 +82,7 @@ public class SongifyCrudFacade {
 
     public void updateSongById(Long id, SongDto newSongDto) {
         songRetriever.existsById(id);
-        // some domain validator
         Song songValidatedAndReadyToUpdate = new Song(newSongDto.name());
-        // some domain validator ended checking
         songUpdater.updateById(id, songValidatedAndReadyToUpdate);
     }
 
@@ -97,18 +95,11 @@ public class SongifyCrudFacade {
         } else {
             toSave.setName(songFromDatabase.getName());
         }
-//        todo
-//        if (songFromRequest.getArtist() != null) {
-//            builder.artist(songFromRequest.getArtist());
-//        } else {
-//            builder.artist(songFromDatabase.getArtist());
-//        }
         songUpdater.updateById(id, toSave);
         return SongDto.builder()
                 .id(toSave.getId())
                 .name(toSave.getName())
                 .build();
-
     }
 
     public void deleteSongById(Long id) {
