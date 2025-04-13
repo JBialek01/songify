@@ -1,6 +1,10 @@
 package com.songify.domain.crud.dto;
 
-import java.time.Instant;
+import lombok.Builder;
 
-public record AlbumRequestDto(String title, Instant releaseDate, Long songId) {
+import java.time.Instant;
+import java.util.Set;
+
+@Builder
+public record AlbumRequestDto(String title, Instant releaseDate, Set<Long> songIds) {
 }

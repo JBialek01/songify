@@ -12,7 +12,7 @@ class AlbumDeleter {
 
     private final AlbumRepository albumRepository;
 
-    void deleteAllAlbumsById(final Set<Long> albumIdsToDelete) {
+    void deleteAllAlbumsByIds(final Set<Long> albumIdsToDelete) {
         albumRepository.deleteByIdIn(albumIdsToDelete);
     }
 }

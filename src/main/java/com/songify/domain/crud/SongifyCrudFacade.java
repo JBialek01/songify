@@ -34,6 +34,9 @@ public class SongifyCrudFacade {
     private final ArtistDeleter artistDeleter;
     private final ArtistAssigner artistAssigner;
     private final ArtistUpdater artistUpdater;
+    private final GenreRetriever genreRetriever;
+    private final GenreAssigner genreAssigner;
+    private final SongAssigner songAssigner;
 
 
     public ArtistDto addArtist(ArtistRequestDto dto) {
@@ -45,7 +48,7 @@ public class SongifyCrudFacade {
     }
 
     public AlbumDto addAlbumWithSong(AlbumRequestDto dto) {
-        return albumAdder.addAlbum(dto.songId(), dto.title(), dto.releaseDate());
+        return albumAdder.addAlbum(dto.songIds(), dto.title(), dto.releaseDate());
     }
 
     public void addArtistToAlbum(Long artistId, Long albumId) {
@@ -72,8 +75,16 @@ public class SongifyCrudFacade {
         return songRetriever.findAll(pageable);
     }
 
+    public Set<AlbumDto> findAllAlbums() {
+        return albumRetriever.findAll();
+    }
+
     public SongDto findSongDtoById(Long id) {
         return songRetriever.findSongDtoById(id);
+    }
+
+    public Set<AlbumDto> findAlbumsByArtistId(final Long artistId) {
+        return albumRetriever.findAlbumsDtoByArtistId(artistId);
     }
 
     public ArtistDto updateArtistNameById(Long artistId, String name) {
@@ -109,5 +120,25 @@ public class SongifyCrudFacade {
 
     public void deleteArtistByIdWithAlbumsAndSongs(Long artistId) {
         artistDeleter.deleteArtistByIdWithAlbumsAndSongs(artistId);
+    }
+
+    public AlbumDto findAlbumById(final Long albumId) {
+        return albumRetriever.findDtoById(albumId);
+    }
+
+    long countArtistsByAlbumId(final Long albumId) {
+        return albumRetriever.countArtistsByAlbumId(albumId);
+    }
+
+    public Set<GenreDto> retrieveGenres() {
+        return genreRetriever.findAll();
+    }
+
+    public void assignGenreToSong(Long genreId, Long songId) {
+        genreAssigner.assignGenreToSong(genreId, songId);
+    }
+
+    public AlbumDto addSongToAlbum(final Long albumId, final Long songId) {
+        return songAssigner.assignSongToAlbum(albumId, songId);
     }
 }
