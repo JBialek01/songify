@@ -12,17 +12,26 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @AllArgsConstructor(access = lombok.AccessLevel.PACKAGE)
-@Transactional
 class SongAdder {
 
     private final SongRepository songRepository;
+    private final GenreAssigner genreAssigner;
 
-    SongDto addSong(SongRequestDto songDto) {
+    SongDto addSong(final SongRequestDto songDto) {
         SongLanguageDto language = songDto.language();
         SongLanguage songLanguage = SongLanguage.valueOf(language.name());
         Song song = new Song(songDto.name(), songDto.releaseDate(), songDto.duration(), songLanguage);
         log.info("adding new song: " + song);
         Song save = songRepository.save(song);
-        return new SongDto(save.getId(), save.getName(), new GenreDto(save.getId(), save.getGenre().getName()));
+        genreAssigner.assignDefaultGenreToSong(song.getId());
+        return new SongDto(save.getId(), save.getName(), new GenreDto(save.getGenre().getId(), save.getGenre().getName()));
+    }
+
+    Song addSongAndGetEntity(final SongRequestDto songDto) {
+        SongLanguageDto language = songDto.language();
+        SongLanguage songLanguage = SongLanguage.valueOf(language.name());
+        Song song = new Song(songDto.name(), songDto.releaseDate(), songDto.duration(), songLanguage);
+        log.info("adding new song: " + song);
+        return songRepository.save(song);
     }
 }

@@ -14,10 +14,17 @@ import java.util.UUID;
 class ArtistAdder {
 
     private final ArtistRepository artistRepository;
+    private final AlbumAdder albumAdder;
 
     ArtistDto addArtist(final String name) {
-        Artist saved = saveArtist(name);
-        return new ArtistDto(saved.getId(), saved.getName());
+        Artist save = saveArtist(name);
+        return new ArtistDto(save.getId(), save.getName());
+    }
+
+    private Artist saveArtist(final String name) {
+        Artist artist = new Artist(name);
+        Artist save = artistRepository.save(artist);
+        return save;
     }
 
     ArtistDto addArtistWithDefaultAlbumAndSong(final ArtistRequestDto dto) {
@@ -28,18 +35,15 @@ class ArtistAdder {
 
     private Artist saveArtistWithDefaultAlbumAndSong(final String name) {
         Artist artist = new Artist(name);
+
         Album album = new Album();
         album.setTitle("default-album:" + UUID.randomUUID());
         album.setReleaseDate(LocalDateTime.now().toInstant(ZoneOffset.UTC));
-        Song song = new Song("default-song-name:" + UUID.randomUUID());
+
+        Song song = new Song("default-song-name: " + UUID.randomUUID());
+
         album.addSongToAlbum(song);
         artist.addAlbum(album);
         return artistRepository.save(artist);
     }
-
-    private Artist saveArtist(final String name) {
-        Artist artist = new Artist(name);
-        return artistRepository.save(artist);
-    }
-
 }
